@@ -18,9 +18,9 @@ void dlist_init(DList *list, void (*destroy)(void *data))
 void dlist_destroy(DList *list)
 {
     void *data;
-    while (list_size(list) > 0)
+    while (dlist_size(list) > 0)
     {
-        if (dlist_remove(list, list_tail(list), (void **)&data) == 0 && list->destroy != NULL)
+        if (dlist_remove(list, dlist_tail(list), (void **)&data) == 0 && list->destroy != NULL)
             list->destroy(data);
     }
     memset(list, 0, sizeof(DList));
@@ -30,12 +30,12 @@ void dlist_destroy(DList *list)
 int dlist_ins_next(DList *list, DListElmt *element, const void *data)
 {
     DListElmt *new_element;
-    if (element == NULL && list_size(list) != 0)
+    if (element == NULL && dlist_size(list) != 0)
         return -1;
     if ((new_element = (DListElmt *)malloc(sizeof(DListElmt))) == NULL)
         return -1;
     new_element->data = (void *)data;
-    if (list_size(list) == 0)
+    if (dlist_size(list) == 0)
     {
         list->head = new_element;
         list->head->prev = NULL;
@@ -59,12 +59,12 @@ int dlist_ins_next(DList *list, DListElmt *element, const void *data)
 int dlist_ins_prev(DList *list, DListElmt *element, const void *data)
 {
     DListElmt *new_element;
-    if (element == NULL && list_size(list) != 0)
+    if (element == NULL && dlist_size(list) != 0)
         return -1;
     if ((new_element = (DListElmt *)malloc(sizeof(DListElmt))) == NULL)
         return -1;
     new_element->data = (void *)data;
-    if (list_size(list) == 0)
+    if (dlist_size(list) == 0)
     {
         list->head = new_element;
         list->head->prev = NULL;
@@ -87,7 +87,7 @@ int dlist_ins_prev(DList *list, DListElmt *element, const void *data)
 
 int dlist_remove(DList *list, DListElmt *element, void **data)
 {
-    if (element == NULL || list_size(list) == 0)
+    if (element == NULL || dlist_size(list) == 0)
         return -1;
     *data = element->data;
     if (element == list->head)
